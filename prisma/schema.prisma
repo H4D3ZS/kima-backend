@@ -1,0 +1,228 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String               @id @default(uuid())
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  firstName          String
+  lastName           String
+  email              String               @unique
+  password           String
+  userType           EnumUserType         @default(member)
+  contactNumber      String?
+  location           String?
+  userDescription    String?
+  profileAvatar      String?
+  coverPhoto         String?
+  jobTitle           String?
+  middleName         String?
+  nameUpdatedAt      DateTime?
+  gender             EnumGender?
+  birthDate          DateTime?
+  blacklistedToken   BlacklistedToken[]
+  classifieds        Classified[]
+  dailyStatusFeeds   DailyStatusFeed[]
+  socialMediaLinks   SocialMediaLink[]
+  favoritedBy        UserFavorite[]       @relation("favoriteUsers")
+  userFavorites      UserFavorite[]
+  classifiedFavorite ClassifiedFavorite[]
+  reportedBy         ReportedUser[]       @relation("reportedBy")
+  reportedUser       ReportedUser[]
+  reportedClassified ReportedClassified[]
+}
+
+model SocialMediaLink {
+  id        Int      @id @default(autoincrement())
+  link      String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([link, userId])
+}
+
+model DailyStatusFeed {
+  id               Int      @id @default(autoincrement())
+  statusContent    String
+  createdAt        DateTime @default(now())
+  userId           String
+  oldStatusContent String?
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserFavorite {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  userId         String
+  favoriteUserId String
+  favoriteUser   User     @relation("favoriteUsers", fields: [favoriteUserId], references: [id], onDelete: Cascade)
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, favoriteUserId])
+}
+
+model Classified {
+  id                 Int                    @id @default(autoincrement())
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+  title              String
+  description        String
+  location           String
+  category           EnumClassifiedCategory
+  userId             String
+  user               User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventDetails       Event?
+  forSaleDetails     ForSale?
+  jobPostingDetails  JobPosting?
+  favoritedBy        ClassifiedFavorite[]   @relation("favoriteClassified")
+  gallery            ClassifiedGallery[]
+  reportedClassified ReportedClassified[]
+}
+
+model ClassifiedGallery {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  imageUrl  String
+
+  classified   Classified @relation(fields: [classifiedId], references: [id], onDelete: Cascade)
+  classifiedId Int
+
+  @@unique([imageUrl, classifiedId])
+}
+
+model Event {
+  id         Int           @id @default(autoincrement())
+  eventType  EventTypeEnum
+  date       DateTime      @db.Date
+  time       DateTime      @db.Time(0)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  classified Classified    @relation(fields: [id], references: [id], onDelete: Cascade)
+  tickets    Ticket[]
+}
+
+model Ticket {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  price     Float
+  eventId   Int
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, title])
+}
+
+model ForSale {
+  id            Int               @id @default(autoincrement())
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  price         Float
+  itemCondition itemConditionEnum
+  classified    Classified        @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model JobPosting {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  classified Classified @relation(fields: [id], references: [id], onDelete: Cascade)
+  sections   Section[]
+}
+
+model Section {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  title        String
+  description  String
+  jobPostingId Int
+  jobPosting   JobPosting @relation(fields: [jobPostingId], references: [id], onDelete: Cascade)
+
+  @@unique([jobPostingId, title])
+}
+
+model ClassifiedFavorite {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  classifiedId Int
+  Classified   Classified? @relation("favoriteClassified", fields: [classifiedId], references: [id])
+
+  @@unique([userId, classifiedId])
+}
+
+model BlacklistedToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @db.Text
+  createdAt DateTime @default(now())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+model ReportedUser {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  reason         String
+  details        String?
+  reportedUser   User     @relation("reportedBy", fields: [reportedUserId], references: [id])
+  reportedUserId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model ReportedClassified {
+  id                   Int        @id @default(autoincrement())
+  createdAt            DateTime   @default(now())
+  reason               String
+  details              String?
+  reportedClassified   Classified @relation(fields: [reportedClassifiedId], references: [id])
+  reportedClassifiedId Int
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+enum EnumUserType {
+  member
+  professional
+  business
+}
+
+enum EnumClassifiedCategory {
+  events
+  for_sale
+  job_posting
+  misc
+  real_estate
+}
+
+enum EventTypeEnum {
+  paid
+  free
+}
+
+enum itemConditionEnum {
+  used
+  new
+}
+
+enum EnumGender {
+  female
+  male
+  others
+  do_not_specify
+}

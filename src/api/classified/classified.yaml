@@ -1,0 +1,364 @@
+/classifieds:
+  get:
+    tags:
+      - Classifieds
+    summary: Get List of Members
+    parameters:
+      - $ref: "#/components/parameters/OffsetPage"
+      - $ref: "#/components/parameters/OffsetPerPage"
+      - in: query
+        name: body
+        required: false
+        schema:
+          $ref: "#/components/schemas/GetClassifiedsInput"
+        description: |
+          Empty body would query all **Classifieds**,
+          for Advanced Querying visit [**Prisma Filter & Sorting**](https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting#filter-conditions-and-operators).
+        style: form
+        explode: true
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetClassifiedsResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      500:
+        $ref: "#/components/responses/500"
+
+/classifieds/{category}:
+  post:
+    tags:
+      - Classifieds
+    summary: Create a Classified Using Id from Authorization Token
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: category
+        required: true
+        schema:
+          $ref: "#/definitions/category"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateClassifiedsInput"
+    responses:
+      201:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateClassifiedsResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+/classifieds/{id}:
+  get:
+    tags:
+      - Classifieds
+    summary: Get Classified List Using Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          $ref: "#/definitions/numberId"
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetClassifiedResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+  put:
+    tags:
+      - Classifieds
+    summary: Update a Classified Using Classified Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          $ref: "#/definitions/numberId"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EditClassifiedInput"
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditClassifiedResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+  delete:
+    tags:
+      - Classifieds
+    summary: Delete a Classified using Classified Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          $ref: "#/definitions/numberId"
+    responses:
+      204:
+        description: No Content
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+/classifieds/{id}/upload/gallery:
+  post:
+    tags:
+      - Classifieds
+    summary: Upload Gallery using Classified Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          $ref: "#/definitions/numberId"
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              images:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadGalleryResponse"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    CreateClassifiedsInput:
+      $ref: "#/definitions/classified"
+
+    CreateClassifiedsResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Created a Classified for ed86eedf-0964-4b70-a297-557289f792b4
+        data:
+          allOf:
+            - type: object
+              properties:
+                id:
+                  $ref: "#/definitions/numberId"
+                userId:
+                  $ref: "#/definitions/userId"
+                category:
+                  $ref: "#/definitions/category"
+            - $ref: "#/definitions/classified"
+
+    EditClassifiedInput:
+      $ref: "#/definitions/classified"
+
+    EditClassifiedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Updated ${id} Classified"
+        data:
+          type: object
+          allOf:
+            - $ref: "#/definitions/classified"
+
+    GetClassifiedsInput:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: "#/definitions/numberId"
+            createdAt:
+              $ref: "#/definitions/createdAt"
+            updatedAt:
+              $ref: "#/definitions/updatedAt"
+            category:
+              $ref: "#/definitions/category"
+        - $ref: "#/definitions/classified"
+
+    GetClassifiedsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+              - type: object
+                properties:
+                  createdAt:
+                    $ref: "#/definitions/createdAt"
+                  updatedAt:
+                    $ref: "#/definitions/updatedAt"
+                  id:
+                    $ref: "#/definitions/numberId"
+                  userId:
+                    $ref: "#/definitions/userId"
+                  gallery:
+                    $ref: "#/definitions/gallery"
+                  category:
+                    $ref: "#/definitions/category"
+              - $ref: "#/definitions/classified"
+        pageInfo:
+          $ref: "#/components/schemas/PageInfo"
+
+    GetClassifiedResponse:
+      allOf:
+        - type: object
+          properties:
+            createdAt:
+              $ref: "#/definitions/createdAt"
+            updatedAt:
+              $ref: "#/definitions/updatedAt"
+            id:
+              $ref: "#/definitions/numberId"
+            userId:
+              $ref: "#/definitions/userId"
+            gallery:
+              $ref: "#/definitions/gallery"
+            category:
+              $ref: "#/definitions/category"
+        - $ref: "#/definitions/classified"
+
+    UploadGalleryResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Classified ${id} Updated
+        gallery:
+          $ref: "#/definitions/gallery"
+
+definitions:
+  category:
+    type: string
+    enum: [events, for_sale, job_posting, real_estate, misc]
+    default: events
+  gallery:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          $ref: "#/definitions/numberId"
+        imageUrl:
+          type: string
+          default: url
+        createdAt:
+          $ref: "#/definitions/createdAt"
+  classified:
+    type: object
+    properties:
+      title:
+        type: string
+        default: sample title
+      location:
+        type: string
+        default: sample location
+      description:
+        type: string
+        default: sample description
+      eventDetails:
+        type: object
+        properties:
+          eventType:
+            type: string
+            enum: [paid, free]
+            default: paid
+          date:
+            type: string
+            format: date
+          time:
+            type: string
+            format: time
+            default: "10:30"
+          tickets:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                price:
+                  type: number
+                  format: float
+      jobPostingDetails:
+        type: object
+        properties:
+          sections:
+            type: array
+            items:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      forSaleDetails:
+        type: object
+        properties:
+          price:
+            type: number
+            format: float
+          itemCondition:
+            type: string
+            enum: [used, new]
+            default: used

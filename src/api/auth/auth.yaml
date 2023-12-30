@@ -1,0 +1,90 @@
+/auth/login:
+  post:
+    security: []
+    tags:
+      - Auth
+    summary: Login to Kima Application
+    requestBody:
+      required: false
+      description: |
+        **IMPORTANT** if firebasetoken is populated, request body is ignored.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LoginMemberInput"
+    parameters:
+      - in: header
+        name: firebase-token
+        description: This is required if easy login is performed and doesnt need the email and password to be filled
+        required: false
+        schema:
+          type: string
+    responses:
+      200:
+        description: Successful Sign In
+        headers:
+          Authorization:
+            description: Authorization header containing the new refresh token.
+            schema:
+              type: string
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginMemberResponse"
+      401:
+        $ref: "#/components/responses/401"
+      400:
+        $ref: "#/components/responses/400"
+      404:
+        $ref: "#/components/responses/404"
+      498:
+        $ref: "#/components/responses/498"
+      500:
+        $ref: "#/components/responses/500"
+
+/auth/logout:
+  post:
+    tags:
+      - Auth
+    summary: Logout current user from Authorization Token
+    responses:
+      200:
+        description: Logout Successful
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  default: "Logout Successful"
+      498:
+        $ref: "#/components/responses/498"
+      500:
+        $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    LoginMemberInput:
+      type: object
+      properties:
+        email:
+          type: string
+          default: jane.doe@example.com
+        password:
+          type: string
+          default: Strong123Password
+
+    LoginMemberResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Successfully authorized member
+        data:
+          allOf:
+            - type: object
+              properties:
+                id:
+                  $ref: "#/definitions/userId"
+            - $ref: "#/definitions/user"

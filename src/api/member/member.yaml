@@ -1,0 +1,285 @@
+/members:
+  get:
+    tags:
+      - Members
+    summary: Get List of Members
+    parameters:
+      - $ref: "#/components/parameters/OffsetPage"
+      - $ref: "#/components/parameters/OffsetPerPage"
+      - in: query
+        name: body
+        required: false
+        schema:
+          $ref: "#/components/schemas/GetMembersInput"
+        description: |
+          Empty body would query all **Members**,
+          for Advanced Querying visit [**Prisma Filter & Sorting**](https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting#filter-conditions-and-operators).
+        style: form
+        explode: true
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetMembersResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      500:
+        $ref: "#/components/responses/500"
+
+  put:
+    tags:
+      - Members
+    summary: Update Member Using Id from Authorization Token
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateMemberInput"
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMemberResponse"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      409:
+        $ref: "#/components/responses/409"
+      500:
+        $ref: "#/components/responses/500"
+  delete:
+    tags:
+      - Members
+    summary: Delete Member Using Id from Authorization Token
+    responses:
+      204:
+        description: No Content
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+/members/{type}:
+  post:
+    security: []
+    parameters:
+      - in: path
+        name: type
+        required: true
+        schema:
+          $ref: "#/definitions/user/properties/userType"
+    tags:
+      - Members
+    summary: Register a Member
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateMemberInput"
+    responses:
+      201:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMemberResponse"
+      400:
+        $ref: "#/components/responses/400"
+      409:
+        $ref: "#/components/responses/409"
+      500:
+        $ref: "#/components/responses/500"
+
+/members/{id}:
+  get:
+    tags:
+      - Members
+    summary: Get Member Using Id
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          $ref: "#/components/schemas/GetMemberInput"
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetMemberResponse"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    GetMembersInput:
+      allOf:
+        - type: object
+          properties:
+            socialMediaLinks:
+              type: boolean
+              default: true
+            favoritedBy:
+              type: boolean
+              default: true
+            userFavorites:
+              type: boolean
+              default: true
+        - $ref: "#/definitions/userMoreDetails"
+
+    GetMembersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+              - $ref: "#/definitions/userMoreDetails"
+              - $ref: "#/definitions/userRelations"
+        pageInfo:
+          $ref: "#/components/schemas/PageInfo"
+
+    GetMemberInput:
+      $ref: "#/definitions/userId"
+
+    GetMemberResponse:
+      allOf:
+        - $ref: "#/definitions/userMoreDetails"
+        - $ref: "#/definitions/userRelations"
+
+    CreateMemberInput:
+      type: object
+      required:
+        - email
+        - firstName
+        - lastName
+        - password
+      properties:
+        email:
+          $ref: "#/definitions/email"
+        firstName:
+          $ref: "#/definitions/user/properties/firstName"
+        lastName:
+          $ref: "#/definitions/user/properties/lastName"
+        password:
+          type: string
+          default: Strong123Password
+
+    CreateMemberResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: User jane.doe@example.com Created
+        data:
+          type: object
+          properties:
+            email:
+              $ref: "#/definitions/email"
+            firstName:
+              $ref: "#/definitions/user/properties/firstName"
+            lastName:
+              $ref: "#/definitions/user/properties/lastName"
+
+    UpdateMemberInput:
+      $ref: "#/definitions/user"
+
+    UpdateMemberResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: User jane.doe@example.com Updated
+        data:
+          $ref: "#/definitions/userMoreDetails"
+
+definitions:
+  userRelations:
+    type: object
+    properties:
+      socialMediaLinks:
+        $ref: "#/components/schemas/GetLinksResponse"
+      favoritedBy:
+        $ref: "#/components/schemas/GetFavoritesResponse"
+      userFavorites:
+        $ref: "#/components/schemas/GetFavoritesResponse"
+
+  userMoreDetails:
+    type: object
+    allOf:
+      - type: object
+        properties:
+          id:
+            $ref: "#/definitions/userId"
+          email:
+            $ref: "#/definitions/email"
+          createdAt:
+            $ref: "#/definitions/createdAt"
+          updatedAt:
+            $ref: "#/definitions/updatedAt"
+      - $ref: "#/definitions/user"
+
+  email:
+    type: string
+    default: jane.doe@example.com
+
+  user:
+    type: object
+    properties:
+      firstName:
+        type: string
+        default: Jane
+      middleName:
+        type: string
+        default: Sue
+      lastName:
+        type: string
+        default: Doe
+      userType:
+        type: string
+        enum: [member, professional, business]
+        default: member
+      contactNumber:
+        type: string
+        default: 09171234567
+      location:
+        type: string
+        default: 366-3012 Facilisi. St.
+      userDescription:
+        type: string
+        default: blandit congue. In scelerisque scelerisque dui. Suspendisse ac metus vitae
+      jobTitle:
+        type: string
+        default: "Community Outreach Specialist"
+      profileAvatar:
+        type: string
+        default: photo url
+      coverPhoto:
+        type: string
+        default: photo url
+      nameUpdatedAt:
+        type: string
+        format: date-time
+      gender:
+        type: string
+        enum: [female, male, others, do_not_specify]
+        format: string
+      birthDate:
+        type: string
+        format: date-time

@@ -1,0 +1,82 @@
+/chat/send-message:
+  post:
+    tags:
+      - Chat
+    summary: Send a message
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              recipientUid:
+                $ref: "#/definitions/userId"
+                description: The recipient's UID
+              message:
+                type: string
+                description: The message to be sent
+            required:
+              - recipientUid
+              - message
+    responses:
+      "200":
+        description: Message sent successfully
+        content:
+          application/json:
+            example:
+              success: true
+              message: message sent!
+      "400":
+        description: Bad request
+        content:
+          application/json:
+            example:
+              message: recipientUid required
+      "500":
+        description: Internal Server Error
+        content:
+          application/json:
+            example:
+              error: Internal Server Error
+              message: message sending failed!
+
+/chat/list:
+  get:
+    tags:
+      - Chat
+    summary: Get a paginated list of chat items
+    description: Retrieve a paginated list of chat items for the authenticated user.
+    parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        description: The page number for pagination.
+      - in: query
+        name: perPage
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 10
+        description: The number of items per page.
+    responses:
+      "200":
+        description: Successful response
+        content:
+          application/json:
+            example:
+              data:
+                - chatId: "1234ass_4228eb13-2f56-4be8-ade2-7d6c80457b1d"
+                  receipientId: "4228eb13-2f56-4be8-ade2-7d6c80457b1d"
+                  avatar: "avatar_url"
+              currentPage: 1
+              totalPages: 5
+              itemsPerPage: 10
+              totalItems: 50
+      "500":
+        description: Internal Server Error

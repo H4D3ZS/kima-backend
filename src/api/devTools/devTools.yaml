@@ -1,0 +1,26 @@
+/dev-tools/getCustomToken/{uid}:
+  get:
+    security: []
+    tags:
+      - Dev Tools
+    summary: Get Custom Token from UID
+    parameters:
+      - in: path
+        name: uid
+        required: true
+        schema:
+          type: string
+          default: User UID
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  default: Bearer Token
+      500:
+        $ref: "#/components/responses/500"

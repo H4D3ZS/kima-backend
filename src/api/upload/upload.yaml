@@ -1,0 +1,61 @@
+/members/upload/cover:
+  post:
+    tags:
+      - Members
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                format: binary
+    summary: Upload a Cover Photo
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMemberResponse"
+      "400":
+        $ref: "#/components/responses/400"
+      "403":
+        $ref: "#/components/responses/403"
+      "409":
+        $ref: "#/components/responses/409"
+      "500":
+        $ref: "#/components/responses/500"
+
+/members/upload/avatar:
+  post:
+    tags:
+      - Members
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              image:
+                type: string
+                format: binary
+    summary: Upload an Avatar Photo
+    responses:
+      201:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMemberResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      409:
+        $ref: "#/components/responses/409"
+      500:
+        $ref: "#/components/responses/500"

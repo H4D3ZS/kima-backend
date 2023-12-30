@@ -1,0 +1,157 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Kima",
+    "dateExported": "2023-11-09T01:02:05.808Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "6cb34a00-6887-4d4e-817c-1dc418dc6404",
+            "name": "Test",
+            "containerId": "",
+            "created": "2023-11-08T16:30:37.298Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "f400ac23-8cdd-4ce8-9257-f722afb3dabb",
+            "name": "Auth",
+            "containerId": "",
+            "created": "2023-11-08T16:30:49.923Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "0d58eb12-7ce0-43be-85a0-8c6eb272976a",
+            "name": "Member",
+            "containerId": "",
+            "created": "2023-11-08T16:30:58.278Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "2d7da36f-34bc-4333-9c5c-fc3eb9dfaaaa",
+            "colId": "ce70ea81-4d9d-4450-9101-293d8c28d362",
+            "containerId": "6cb34a00-6887-4d4e-817c-1dc418dc6404",
+            "name": "Get Firebase Custom Token",
+            "url": "/dev-tools/getCustomToken",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-08T16:24:06.166Z",
+            "modified": "2023-11-08T16:34:46.622Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "fa3722e0-ba3a-40f3-9ab9-64aa7226f7db",
+            "colId": "ce70ea81-4d9d-4450-9101-293d8c28d362",
+            "containerId": "0d58eb12-7ce0-43be-85a0-8c6eb272976a",
+            "name": "Get Member/s",
+            "url": "/members/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-08T16:25:05.225Z",
+            "modified": "2023-11-08T16:37:10.274Z",
+            "headers": [
+                {
+                    "name": "access-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50Ijp7ImlkIjoiYTg0OTM0ZjQtMWZlYy00NTljLWI4NjktNmFlNGQ0YzA5NDU3IiwiY3JlYXRlZEF0IjoiMjAyMy0xMS0wOFQxNjozNToxMy4yNDhaIiwidXBkYXRlZEF0IjoiMjAyMy0xMS0wOFQxNjozNToxMy4yNDhaIiwiZmlyc3ROYW1lIjoiR3VyZyIsImxhc3ROYW1lIjoiIiwiZW1haWwiOiJnZGx2ZWVwbEBnbWFpbC5jb20iLCJ1c2VyVHlwZSI6Im1lbWJlciIsImNvbnRhY3ROdW1iZXIiOm51bGwsImxvY2F0aW9uIjpudWxsLCJ1c2VyRGVzY3JpcHRpb24iOm51bGwsInBhc3N3b3JkIjoiJDJiJDEwJGthdHYuRlBDVjBobFR4RG5MME5ST3VXV1E4dXdJNWJ6R2FnaVFoOEhFTFhUdVI5dHVNZnBHIiwicHJvZmlsZUF2YXRhciI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBY0hUdGNmZGxGVXBwekNoSzdaYXhqR3JwQXlLNVAzS0VDZ1NVUW5TWEc1WE43V3lXaz1zOTYtYyIsImNvdmVyUGhvdG8iOm51bGwsImpvYlRpdGxlIjpudWxsfSwiaWF0IjoxNjk5NDYxMzEzLCJleHAiOjE2OTk1NDc3MTN9.IW-O3UeN6M4M0rld3uYuzs--kX-75OHwSb71MGLGF8U"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "4def3f08-7f9c-4d78-b011-0f902b6b3273",
+            "colId": "ce70ea81-4d9d-4450-9101-293d8c28d362",
+            "containerId": "f400ac23-8cdd-4ce8-9257-f722afb3dabb",
+            "name": "Login",
+            "url": "http://localhost:5000/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-08T16:25:55.712Z",
+            "modified": "2023-11-08T16:35:13.322Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImQ0OWU0N2ZiZGQ0ZWUyNDE0Nzk2ZDhlMDhjZWY2YjU1ZDA3MDRlNGQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiR3VyZyIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQWNIVHRjZmRsRlVwcHpDaEs3WmF4akdycEF5SzVQM0tFQ2dTVVFuU1hHNVhON1d5V2s9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20va2ltYS1mN2QzMyIsImF1ZCI6ImtpbWEtZjdkMzMiLCJhdXRoX3RpbWUiOjE2OTk0NjEzMDAsInVzZXJfaWQiOiJ1V3NRZFdQNk4yTUpCM3FWYVp3ZzNiTXpzWmwxIiwic3ViIjoidVdzUWRXUDZOMk1KQjNxVmFad2czYk16c1psMSIsImlhdCI6MTY5OTQ2MTMwMCwiZXhwIjoxNjk5NDY0OTAwLCJlbWFpbCI6ImdkbHZlZXBsQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTEwMDM0NDAxOTcwNzE1MzkyMjc5Il0sImVtYWlsIjpbImdkbHZlZXBsQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6ImN1c3RvbSJ9fQ.HdZr5urnu9EJTe1RQCKyywIqpUEUwPTTMMk_LyscadAWpChc2iH68s03UY9ooNSQTLReOkx_o4zvexe90OZfriOyJGKpyIo-K5d600a1oIEaQXg_CSwA60hbWi_0IHZQSt65FFwCHBNKYvg7O0AY1P1pKBMpMtmXaRf5-hCnL_1nOB8x2SmhZVf1xykhQbio-_s6ILMyIL9-UEI1F2tPhm3EfGWM-cA_snXCQ0AGkF13QDxYFuUYYzyCTn-HihIz2lywXvlWmprnU4rqcm5gp_GQvpz_tLu42i-XxWyVgPFxWlKobXFNgXhxNNxmCPh01RTr-59dHK1-Gm2kkAtKhA"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"johnbusiness@gmail.com\",\n  \"password\": \"johnbusiness\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "29522375-e3d5-4655-b88c-faad0996d767",
+            "colId": "ce70ea81-4d9d-4450-9101-293d8c28d362",
+            "containerId": "6cb34a00-6887-4d4e-817c-1dc418dc6404",
+            "name": "Get Firebase ID Token",
+            "url": "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyAS-PzMB3RKqWuBi58TyWbQkCXExHZBqOE",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-08T16:24:27.960Z",
+            "modified": "2023-11-08T16:35:00.500Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "key",
+                    "value": "AIzaSyAS-PzMB3RKqWuBi58TyWbQkCXExHZBqOE",
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTY5OTQ2MTI4NiwiZXhwIjoxNjk5NDY0ODg2LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay1uOXZ4MUBraW1hLWY3ZDMzLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstbjl2eDFAa2ltYS1mN2QzMy5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6InVXc1FkV1A2TjJNSkIzcVZhWndnM2JNenNabDEifQ.ishU4koI4Kwb1KDM8JtiMXRQ2XCeYGgc8hmQIX9iziSDeUyRhpkV6FWCdPy6iIxX24feJp6Vh5rrXbJuX3eXTJ4ohMJilqxbyUwzMR6rl19RDx35hpDK3feqot3IMVH2AxAoiPo5CknkvJQNVq1ED75si8XnEtvqrtyVlQ_zd6CTyzaUHGbot7keYVpu-P-yBla5ioKRaR_moNqY6DSI9lPrDHKmJLQfZ3y0FTZx-6KueJrrl1fVDWAHIrLoqGUVa2CrGRAg9zEsrikbBOhubpUnZA7ae5VuT3Fiu8KgmHTnRqcxwEakOl_4H1dSiNlryq2H9CQ0Tg0LlQmWc3aUMQ\",\n  \"returnSecureToken\": true\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "61bb098e-0f85-47d4-b24e-c533324aa28e",
+            "colId": "ce70ea81-4d9d-4450-9101-293d8c28d362",
+            "containerId": "0d58eb12-7ce0-43be-85a0-8c6eb272976a",
+            "name": "Create Member",
+            "url": "/members",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-11-08T16:26:13.400Z",
+            "modified": "2023-11-08T16:40:33.013Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"firstName\": \"test\",\n  \"lastName\": \"test\",\n  \"email\": \"test2@gmail.com\",\n  \"password\": \"testtest\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e82ddbea-c5a7-4354-a745-0cb9403e8950",
+            "colId": "ce70ea81-4d9d-4450-9101-293d8c28d362",
+            "containerId": "0d58eb12-7ce0-43be-85a0-8c6eb272976a",
+            "name": "Delete Member",
+            "url": "/members/2006557b-d185-435f-b16f-c725bc5c0fba",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2023-11-08T16:41:07.781Z",
+            "modified": "2023-11-09T00:45:53.940Z",
+            "headers": [
+                {
+                    "name": "access-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50Ijp7ImlkIjoiNDk1MWZiMDItYjAxYS00YzFmLWE2ZDctNmJlZmE0N2Y1MzNhIiwiY3JlYXRlZEF0IjoiMjAyMy0xMS0wOFQwOTowNDozNy40NTNaIiwidXBkYXRlZEF0IjoiMjAyMy0xMS0wOFQwOTowNDozNy40NTNaIiwiZmlyc3ROYW1lIjoiSm9obiIsImxhc3ROYW1lIjoiQnVzaW5lc3MiLCJlbWFpbCI6ImpvaG5idXNpbmVzc0BnbWFpbC5jb20iLCJ1c2VyVHlwZSI6ImJ1c2luZXNzIiwiY29udGFjdF9udW1iZXIiOm51bGwsImxvY2F0aW9uIjpudWxsLCJ1c2VyRGVzY3JpcHRpb24iOm51bGwsInBhc3N3b3JkIjoiJDJiJDEwJGYwYmRMQlROYnM4SUVPOXBMdC8vM3U4aThIcHl6TGQvTjJ2OGNvM21ReURNeVRXU2RkUkJPIiwicHJvZmlsZUF2YXRhciI6bnVsbCwiY292ZXJQaG90byI6bnVsbCwiam9iVGl0bGUiOm51bGwsInNvY2lhbE1lZGlhTGlua3MiOltdLCJkYWlseVN0YXR1c0ZlZWRzIjpbXSwiZmF2b3JpdGVVc2VyIjpbXSwiQ2xhc3NpZmllZCI6W10sIlVzZXJGYXZvcml0ZSI6W119LCJpYXQiOjE2OTk0MzYxMjUsImV4cCI6MTY5OTUyMjUyNX0.2_trD5KcdJ69utVM0-NFRuXFqhTd6r7phXWMDQRjvRo",
+                    "isDisabled": true
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ],
+    "settings": {
+        "options": {
+            "baseUrl": "http://localhost:5000"
+        }
+    }
+}

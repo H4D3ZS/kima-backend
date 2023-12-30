@@ -1,0 +1,10 @@
+node_modules
+# Keep environment variables out of version control
+.env
+pnpm-lock.yaml
+package-lock.json
+dist
+apple-app-site-association.json
+assetlinks.json
+/logs/**
+file_uploads

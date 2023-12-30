@@ -1,0 +1,162 @@
+/members/social-media-links:
+  get:
+    tags:
+      - Social Media Links
+    summary: Get Social Media Links Using Id from Authorization Token
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetLinksResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      500:
+        $ref: "#/components/responses/500"
+
+  post:
+    tags:
+      - Social Media Links
+    summary: Insert a Link using userId from Authorization Token
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateLinkInput"
+    responses:
+      201:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLinkResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      409:
+        $ref: "#/components/responses/409"
+      500:
+        $ref: "#/components/responses/500"
+
+/members/social-media-links/{id}:
+  put:
+    tags:
+      - Social Media Links
+    summary: Update Link
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          default: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateLinkInput"
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateLinkResponse"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      409:
+        $ref: "#/components/responses/409"
+      500:
+        $ref: "#/components/responses/500"
+  delete:
+    tags:
+      - Social Media Links
+    summary: Delete Link
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          default: 1
+    responses:
+      204:
+        description: No Content
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    CreateLinkInput:
+      type: object
+      properties:
+        link:
+          $ref: "#/definitions/link"
+
+    CreateLinkResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Social Link https://www.facebook.com/Gurgggg Added
+        data:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions/numberId"
+            link:
+              $ref: "#/definitions/link"
+
+    GetLinksResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: "#/definitions/numberId"
+          createdAt:
+            $ref: "#/definitions/createdAt"
+          updatedAt:
+            $ref: "#/definitions/createdAt"
+          link:
+            $ref: "#/definitions/link"
+
+    UpdateLinkInput:
+      type: object
+      properties:
+        link:
+          $ref: "#/definitions/link"
+
+    UpdateLinkResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Link updated to https://www.facebook.com/Gurgggg
+        data:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions/numberId"
+            link:
+              $ref: "#/definitions/link"
+            createdAt:
+              $ref: "#/definitions/createdAt"
+            updatedAt:
+              $ref: "#/definitions/createdAt"
+definitions:
+  link:
+    type: string
+    default: https://www.facebook.com/Gurgggg

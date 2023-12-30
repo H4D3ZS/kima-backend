@@ -1,0 +1,126 @@
+/reports/classified:
+  post:
+    tags:
+      - Reports
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateClassifiedReportInput"
+    summary: Report a Classified
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateClassifiedReportResponse"
+      "400":
+        $ref: "#/components/responses/400"
+      "403":
+        $ref: "#/components/responses/403"
+      "500":
+        $ref: "#/components/responses/500"
+
+/reports/user:
+  post:
+    tags:
+      - Reports
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateUserReportInput"
+    summary: Report a Classified
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserReportResponse"
+      "400":
+        $ref: "#/components/responses/400"
+      "403":
+        $ref: "#/components/responses/403"
+      "500":
+        $ref: "#/components/responses/500"
+
+definitions:
+  reason:
+    type: string
+    default: "Harassment"
+  details:
+    type: string
+    default: "It's me"
+
+components:
+  schemas:
+    CreateClassifiedReportInput:
+      type: object
+      properties:
+        id:
+          $ref: "#/definitions/numberId"
+        reason:
+          type: string
+          default: "Harassment"
+        details:
+          type: string
+          default: "It's me"
+    CreateClassifiedReportResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Created a report for Classified ${id}"
+        data:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions/numberId"
+            createdAt:
+              $ref: "#/definitions/createdAt"
+            reason:
+              $ref: "#/definitions/reason"
+            details:
+              $ref: "#/definitions/details"
+            reportedClassifiedId:
+              type: number
+              default: 1
+            userId:
+              $ref: "#/definitions/userId"
+    CreateUserReportInput:
+      type: object
+      properties:
+        id:
+          $ref: "#/definitions/userId"
+        reason:
+          type: string
+          default: "Harassment"
+        details:
+          type: string
+          default: "It's me"
+    CreateUserReportResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Created a report for User ${id}"
+        data:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions/userId"
+            createdAt:
+              $ref: "#/definitions/createdAt"
+            reason:
+              $ref: "#/definitions/reason"
+            details:
+              $ref: "#/definitions/details"
+            reportedUserId:
+              type: number
+              default: 1
+            userId:
+              $ref: "#/definitions/userId"

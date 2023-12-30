@@ -1,0 +1,146 @@
+/members/favorite:
+  post:
+    tags:
+      - User Favorites
+    summary: Favorite a Member Using Id from Authorization Token
+    description: Only **professional** and **business** userType can use this endpoint
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FavoriteMemberInput"
+    responses:
+      201:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavoriteMemberResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      409:
+        $ref: "#/components/responses/409"
+      500:
+        $ref: "#/components/responses/500"
+
+  get:
+    tags:
+      - User Favorites
+    summary: Get Favorited Users Using Id from Authorization Token
+    description: Only **professional** and **business** userType can use this endpoint
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetFavoritesResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      500:
+        $ref: "#/components/responses/500"
+
+/members/favorite/{id}:
+  delete:
+    tags:
+      - User Favorites
+    summary: Unfavorite a Member Using Favorite Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          default: 1
+    responses:
+      204:
+        description: No Content
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+/members/favorited-by:
+  get:
+    tags:
+      - User Favorites
+    summary: Get Users that Favorited current User Using Id from Authorization Token
+    description: Only **professional** and **business** userType can use this endpoint
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetFavoritesResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      500:
+        $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    GetFavoritesInput:
+      type: object
+      properties:
+        profileId:
+          $ref: "#/definitions/userId"
+
+    GetFavoritesResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: "#/definitions/numberId"
+          createdAt:
+            $ref: "#/definitions/createdAt"
+          favoriteUser:
+            $ref: "#/definitions/favoriteUser"
+
+    FavoriteMemberInput:
+      type: object
+      properties:
+        profileId:
+          $ref: "#/definitions/userId"
+
+    FavoriteMemberResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: User jane.doe@example.com favorited
+        data:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions/numberId"
+            favoriteUser:
+              $ref: "#/definitions/favoriteUser"
+
+definitions:
+  favoriteUser:
+    type: object
+    properties:
+      id:
+        $ref: "#/definitions/userId"
+      email:
+        $ref: "#/definitions/email"
+      firstName:
+        $ref: "#/definitions/user/properties/firstName"
+      lastName:
+        $ref: "#/definitions/user/properties/lastName"
+      profileAvatar:
+        type: string

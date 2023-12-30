@@ -1,0 +1,173 @@
+/members/daily-status:
+  post:
+    tags:
+      - Daily Status
+    summary: Create a Daily Status Using Id from Authorization Token
+    description: Only **professional** and **business** userType can use this endpoint
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DailyStatusInput"
+    responses:
+      201:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DailyStatusResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+/members/daily-status/{id}:
+  get:
+    tags:
+      - Daily Status
+    summary: Get Daily Status List Using Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: If this is empty it will use the Id from from Authorization Token
+        schema:
+          $ref: "#/definitions/userId"
+      - in: query
+        name: cursor
+        description: pass the last Id from result to determine the next 5 items
+        schema:
+          type: number
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetDailyStatusResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      500:
+        $ref: "#/components/responses/500"
+
+  put:
+    tags:
+      - Daily Status
+    summary: Update a Daily Status Using Daily Status Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          default: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DailyStatusInput"
+    responses:
+      200:
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditDailyStatusResponse"
+      400:
+        $ref: "#/components/responses/400"
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+  delete:
+    tags:
+      - Daily Status
+    summary: Delete a Daily Status using Daily Status Id
+    description: Only **professional** and **business** userType can use this endpoint
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: number
+          default: 1
+    responses:
+      204:
+        description: No Content
+      403:
+        $ref: "#/components/responses/403"
+      404:
+        $ref: "#/components/responses/404"
+      500:
+        $ref: "#/components/responses/500"
+
+components:
+  schemas:
+    DailyStatusInput:
+      type: object
+      properties:
+        statusContent:
+          $ref: "#/definitions/dailyStatus/properties/statusContent"
+
+    DailyStatusResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: Created a daily status for ed86eedf-0964-4b70-a297-557289f792b4
+        data:
+          type: object
+          properties:
+            id:
+              $ref: "#/definitions/numberId"
+            statusContent:
+              $ref: "#/definitions/dailyStatus/properties/statusContent"
+
+    EditDailyStatusResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Updated ${id} daily status"
+        data:
+          allOf:
+            - $ref: "#/definitions/dailyStatus"
+
+    GetDailyStatusResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+              - type: object
+                properties:
+                  createdAt:
+                    $ref: "#/definitions/createdAt"
+              - $ref: "#/definitions/dailyStatus"
+definitions:
+  dailyStatus:
+    type: object
+    properties:
+      id:
+        $ref: "#/definitions/numberId"
+      updatedAt:
+        $ref: "#/definitions/updatedAt"
+      statusContent:
+        type: string
+        default: sample status
+      oldStatusContent:
+        type: string
+        default: sample status
