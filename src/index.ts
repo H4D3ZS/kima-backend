@@ -28,25 +28,25 @@ import { chatRouter } from "./api/chat/chat.controller";
 import { reportsRouter } from "./api/reports/reports.controller";
 
 
-// const corsOptions = {
-//   // origin: ["    http://localhost:3000", "https://www.kimaapp.com"],
+const app = express();
+app.set("env", APP.ENV);
+logger.info("Starting", APP.APP_NAME, "on", APP.ENV, "environment");
 
-   
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 204,
-// };
+//const corsOptions = {
+//  origin: "https://www.kimaapp.com/", 
+//  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//  credentials: true,
+//  optionsSuccessStatus: 204,
+//};
+
+//To accept incoming connection from front end
 
 const corsOptions = {
-  origin: ['*', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Origin', 'http://localhost:3000', 'http://localhost:5000'], // Allow all origins
+  origin: '*', // Allow all origins
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
 };
-
-const app = express();
-app.set("env", APP.ENV);
-logger.info("Starting", APP.APP_NAME, "on", APP.ENV, "environment");
 
 app.use(cors(corsOptions));
 app.use(requestId);
@@ -73,24 +73,30 @@ app.use(
   })
 );
 
-// Dev Routes
+//Dev Routes
 if (isDev) {
   swaggerDocs(app);
   app.use("/dev-tools", devToolsRouter);
 }
 
-// Routes
+//Routes
 app.use("/auth", authRouter);
+
 app.use("/healthcheck", (req: Request, res: Response) => {
   res.status(200);
   res.json({ message: "OK" });
 });
+
 app.use("/members/favorite", jwt, favoriteUserRouter);
 app.use("/members/upload", jwt, uploadRouter);
+
 app.use("/members/social-media-links", [jwt, isProBus], socialMediaLinksRouter);
 app.use("/members/daily-status", [jwt, isProBus], dailyStatusRouter);
+
 app.use("/classifieds", [jwt, isProBus], classifiedRouter);
+
 app.use("/reports", jwt, reportsRouter);
+
 app.use("/members", signUpRouter);
 app.use("/members", memberRouter);
 
@@ -100,13 +106,17 @@ app.get("/.well-known/assetlinks.json", (req, res) => {
   res.sendFile(filePath);
 });
 
-// Serve the apple-app-site-association.json file
+// Serve the assetlinks.json file
 app.get("/.well-known/apple-app-site-association.json", (req, res) => {
-  const filePath = path.join(__dirname, "..", "apple-app-site-association.json");
+  const filePath = path.join(
+    __dirname,
+    "..",
+    "apple-app-site-association.json"
+  );
   res.sendFile(filePath);
 });
 
-// Chat
+//chat
 app.use("/chat", jwt, chatRouter);
 
 app.all("*", (req, res) => {
@@ -117,7 +127,7 @@ app.all("*", (req, res) => {
   });
 });
 
-// Start App
+//Start App
 app.listen(APP.PORT, () => {
   logger.info("Server listening on port", APP.PORT);
 });
