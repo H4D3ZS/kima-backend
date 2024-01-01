@@ -38,7 +38,7 @@ import { reportsRouter } from "./api/reports/reports.controller";
 // };
 
 const corsOptions = {
-  origin: ['*', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Origin', 'http://localhost:3000', 'http://localhost:5000'], // Allow all origins
+  origin: ['*Access-Control-Allow-Origin', 'Access-Control-Allow-Origin', 'http://localhost:3000', 'http://localhost:5000'], // Allow all origins
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
